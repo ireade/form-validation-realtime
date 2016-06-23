@@ -5,7 +5,7 @@
 	- Keeps track of the list of invalidity messages for this input
 	- Keeps track of what validity checks need to be performed for this input
 	- Performs the validity checks and sends feedback to the front end
-	
+
 ---------------------------- */
 
 function CustomValidation() {
@@ -26,7 +26,7 @@ CustomValidation.prototype = {
 			var isInvalid = this.validityChecks[i].isInvalid(input);
 			if (isInvalid) {
 				this.addInvalidity(this.validityChecks[i].invalidityMessage);
-			} 
+			}
 
 			var requirementElement = this.validityChecks[i].element;
 			if (requirementElement) {
@@ -54,7 +54,7 @@ CustomValidation.prototype = {
 		1. isInvalid() - the function to determine if the input fulfills a particular requirement
 		2. invalidityMessage - the error message to display if the field is invalid
 		3. element - The element that states the requirement
-	
+
 ---------------------------- */
 
 var usernameValidityChecks = [
@@ -180,7 +180,6 @@ passwordRepeatInput.CustomValidation.validityChecks = passwordRepeatValidityChec
 ---------------------------- */
 
 var inputs = document.querySelectorAll('input:not([type="submit"])');
-var submit = document.querySelector('input[type="submit"');
 
 for (var i = 0; i < inputs.length; i++) {
 	inputs[i].addEventListener('keyup', function() {
@@ -188,8 +187,14 @@ for (var i = 0; i < inputs.length; i++) {
 	});
 }
 
-submit.addEventListener('click', function() {
+var submit = document.querySelector('input[type="submit"');
+var form = document.getElementById('registration');
+
+function validate() {
 	for (var i = 0; i < inputs.length; i++) {
 		checkInput(inputs[i]);
 	}
-});
+}
+
+submit.addEventListener('click', validate);
+form.addEventListener('submit', validate);
