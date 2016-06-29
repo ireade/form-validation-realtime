@@ -8,9 +8,15 @@
 
 ---------------------------- */
 
-function CustomValidation() {
+function CustomValidation(input) {
 	this.invalidities = [];
 	this.validityChecks = [];
+	
+	//add reference to the input node	
+	this.inputNode = input;
+	
+	//trigger method to attach the listener
+	this.registerListener();
 }
 
 CustomValidation.prototype = {
@@ -40,7 +46,30 @@ CustomValidation.prototype = {
 
 			} // end if requirementElement
 		} // end for
+	},
+	checkInput: function() { // checkInput now encapsulated
+
+		this.inputNode.CustomValidation.invalidities = [];
+		this.checkValidity(this.inputNode);
+
+		if ( this.inputNode.CustomValidation.invalidities.length == 0 && this.inputNode.value != '' ) {
+			this.inputNode.setCustomValidity('');
+		} else {
+			var message = this.inputNode.CustomValidation.getInvalidities();
+			this.inputNode.setCustomValidity(message);
+		}
+	},
+	registerListener: function(){ //register the listener here
+
+		var CustomValidation = this;
+
+		this.inputNode.addEventListener('keyup', function() {
+			CustomValidation.checkInput();
+		});
+
+
 	}
+
 };
 
 
@@ -123,31 +152,6 @@ var passwordRepeatValidityChecks = [
 ];
 
 
-
-/* ----------------------------
-
-	Check this input
-
-	Function to check this particular input
-	If input is invalid, use setCustomValidity() to pass a message to be displayed
-
----------------------------- */
-
-function checkInput(input) {
-
-	input.CustomValidation.invalidities = [];
-	input.CustomValidation.checkValidity(input);
-
-	if ( input.CustomValidation.invalidities.length == 0 && input.value != '' ) {
-		input.setCustomValidity('');
-	} else {
-		var message = input.CustomValidation.getInvalidities();
-		input.setCustomValidity(message);
-	}
-}
-
-
-
 /* ----------------------------
 
 	Setup CustomValidation
@@ -161,13 +165,13 @@ var usernameInput = document.getElementById('username');
 var passwordInput = document.getElementById('password');
 var passwordRepeatInput = document.getElementById('password_repeat');
 
-usernameInput.CustomValidation = new CustomValidation();
+usernameInput.CustomValidation = new CustomValidation(usernameInput);
 usernameInput.CustomValidation.validityChecks = usernameValidityChecks;
 
-passwordInput.CustomValidation = new CustomValidation();
+passwordInput.CustomValidation = new CustomValidation(passwordInput);
 passwordInput.CustomValidation.validityChecks = passwordValidityChecks;
 
-passwordRepeatInput.CustomValidation = new CustomValidation();
+passwordRepeatInput.CustomValidation = new CustomValidation(passwordRepeatInput);
 passwordRepeatInput.CustomValidation.validityChecks = passwordRepeatValidityChecks;
 
 
@@ -181,18 +185,13 @@ passwordRepeatInput.CustomValidation.validityChecks = passwordRepeatValidityChec
 
 var inputs = document.querySelectorAll('input:not([type="submit"])');
 
-for (var i = 0; i < inputs.length; i++) {
-	inputs[i].addEventListener('keyup', function() {
-		checkInput(this);
-	});
-}
 
 var submit = document.querySelector('input[type="submit"');
 var form = document.getElementById('registration');
 
 function validate() {
 	for (var i = 0; i < inputs.length; i++) {
-		checkInput(inputs[i]);
+		inputs[i].CustomValidation.checkInput();
 	}
 }
 
