@@ -37,11 +37,13 @@ CustomValidation.prototype = {
 			var requirementElement = this.validityChecks[i].element;
 			if (requirementElement) {
 				if (isInvalid) {
-					requirementElement.classList.add('invalid');
-					requirementElement.classList.remove('valid');
+					requirementElement.classList
+					.add('invalid')
+					.remove('valid');
 				} else {
-					requirementElement.classList.remove('invalid');
-					requirementElement.classList.add('valid');
+					requirementElement.classList
+					.remove('invalid')
+					.add('valid');
 				}
 
 			} // end if requirementElement
@@ -59,7 +61,7 @@ CustomValidation.prototype = {
 			this.inputNode.setCustomValidity(message);
 		}
 	},
-	registerListener: function(){ //register the listener here
+	registerListener: function() { //register the listener here
 
 		var CustomValidation = this;
 
