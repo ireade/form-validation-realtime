@@ -11,10 +11,10 @@
 function CustomValidation(input) {
 	this.invalidities = [];
 	this.validityChecks = [];
-	
-	//add reference to the input node	
+
+	//add reference to the input node
 	this.inputNode = input;
-	
+
 	//trigger method to attach the listener
 	this.registerListener();
 }
@@ -54,7 +54,7 @@ CustomValidation.prototype = {
 		this.inputNode.CustomValidation.invalidities = [];
 		this.checkValidity(this.inputNode);
 
-		if ( this.inputNode.CustomValidation.invalidities.length == 0 && this.inputNode.value != '' ) {
+		if ( this.inputNode.CustomValidation.invalidities.length === 0 && this.inputNode.value !== '' ) {
 			this.inputNode.setCustomValidity('');
 		} else {
 			var message = this.inputNode.CustomValidation.getInvalidities();
