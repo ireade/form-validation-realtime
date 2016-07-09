@@ -21,5 +21,7 @@ This branch hold an updates version of the original. If you're coming from the [
 
 ## Changes + Contributors
 
-- [Commit 2f552735...](https://github.com/ireade/form-validation-realtime/commit/2f552735aee98e22d453fc0e22f30b479e4d9f0a) - [@sarbbottam](https://github.com/sarbbottam) added an event listener for submit of the form
-- [Commit 2a3e0ad0...](https://github.com/ireade/form-validation-realtime/commit/2a3e0ad0d3bd882aecf619ddb4985b608ec5391a) - [@salisadecade](https://github.com/salisadecade) Encapsulated `checkInput` and event registration
+- [Commit 2f552735...](https://github.com/ireade/form-validation-realtime/commit/2f552735aee98e22d453fc0e22f30b479e4d9f0a) 
+- [@sarbbottam](https://github.com/sarbbottam) added an event listener for submit of the form
+- [Commit 2a3e0ad0...](https://github.com/ireade/form-validation-realtime/commit/2a3e0ad0d3bd882aecf619ddb4985b608ec5391a) 
+- [@salisadecade](https://github.com/salisadecade) Encapsulated `checkInput` and event registration
