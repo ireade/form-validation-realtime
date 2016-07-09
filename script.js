@@ -11,10 +11,10 @@
 function CustomValidation(input) {
 	this.invalidities = [];
 	this.validityChecks = [];
-	
-	//add reference to the input node	
+
+	//add reference to the input node
 	this.inputNode = input;
-	
+
 	//trigger method to attach the listener
 	this.registerListener();
 }
@@ -35,6 +35,7 @@ CustomValidation.prototype = {
 			}
 
 			var requirementElement = this.validityChecks[i].element;
+
 			if (requirementElement) {
 				if (isInvalid) {
 					requirementElement.classList.add('invalid');
@@ -52,14 +53,14 @@ CustomValidation.prototype = {
 		this.inputNode.CustomValidation.invalidities = [];
 		this.checkValidity(this.inputNode);
 
-		if ( this.inputNode.CustomValidation.invalidities.length == 0 && this.inputNode.value != '' ) {
+		if ( this.inputNode.CustomValidation.invalidities.length === 0 && this.inputNode.value !== '' ) {
 			this.inputNode.setCustomValidity('');
 		} else {
 			var message = this.inputNode.CustomValidation.getInvalidities();
 			this.inputNode.setCustomValidity(message);
 		}
 	},
-	registerListener: function(){ //register the listener here
+	registerListener: function() { //register the listener here
 
 		var CustomValidation = this;
 
