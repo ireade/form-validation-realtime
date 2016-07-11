@@ -1,40 +1,32 @@
-/* ----------------------------
+class CustomValidation {
+    constructor(input) {
+        this.invalidities = [];
+        this.validityChecks = [];
 
-	CustomValidation prototype
+        //add reference to the input node
+        this.inputNode = input;
 
-	- Keeps track of the list of invalidity messages for this input
-	- Keeps track of what validity checks need to be performed for this input
-	- Performs the validity checks and sends feedback to the front end
+        //trigger method to attach the listener
+        this.registerListener();
+    }
 
----------------------------- */
-
-function CustomValidation(input) {
-	this.invalidities = [];
-	this.validityChecks = [];
-
-	//add reference to the input node
-	this.inputNode = input;
-
-	//trigger method to attach the listener
-	this.registerListener();
-}
-
-CustomValidation.prototype = {
-	addInvalidity: function(message) {
+    addInvalidity(message) {
 		this.invalidities.push(message);
-	},
-	getInvalidities: function() {
-		return this.invalidities.join('. \n');
-	},
-	checkValidity: function(input) {
-		for ( var i = 0; i < this.validityChecks.length; i++ ) {
+	}
 
-			var isInvalid = this.validityChecks[i].isInvalid(input);
+    getInvalidities() {
+		return this.invalidities.join('. \n');
+	}
+
+    checkValidity(input) {
+		for ( let i = 0; i < this.validityChecks.length; i++ ) {
+
+			const isInvalid = this.validityChecks[i].isInvalid(input);
 			if (isInvalid) {
 				this.addInvalidity(this.validityChecks[i].invalidityMessage);
 			}
 
-			var requirementElement = this.validityChecks[i].element;
+			const requirementElement = this.validityChecks[i].element;
 			if (requirementElement) {
 				if (isInvalid) {
 					requirementElement.classList
@@ -48,8 +40,9 @@ CustomValidation.prototype = {
 
 			} // end if requirementElement
 		} // end for
-	},
-	checkInput: function() { // checkInput now encapsulated
+	}
+
+    checkInput() { // checkInput now encapsulated
 
 		this.inputNode.CustomValidation.invalidities = [];
 		this.checkValidity(this.inputNode);
@@ -57,22 +50,22 @@ CustomValidation.prototype = {
 		if ( this.inputNode.CustomValidation.invalidities.length === 0 && this.inputNode.value !== '' ) {
 			this.inputNode.setCustomValidity('');
 		} else {
-			var message = this.inputNode.CustomValidation.getInvalidities();
+			const message = this.inputNode.CustomValidation.getInvalidities();
 			this.inputNode.setCustomValidity(message);
 		}
-	},
-	registerListener: function() { //register the listener here
+	}
 
-		var CustomValidation = this;
+    registerListener() { //register the listener here
 
-		this.inputNode.addEventListener('keyup', function() {
+		const CustomValidation = this;
+
+		this.inputNode.addEventListener('keyup', () => {
 			CustomValidation.checkInput();
 		});
 
 
 	}
-
-};
+}
 
 
 
@@ -88,17 +81,17 @@ CustomValidation.prototype = {
 
 ---------------------------- */
 
-var usernameValidityChecks = [
+const usernameValidityChecks = [
 	{
-		isInvalid: function(input) {
+		isInvalid(input) {
 			return input.value.length < 3;
 		},
 		invalidityMessage: 'This input needs to be at least 3 characters',
 		element: document.querySelector('label[for="username"] .input-requirements li:nth-child(1)')
 	},
 	{
-		isInvalid: function(input) {
-			var illegalCharacters = input.value.match(/[^a-zA-Z0-9]/g);
+		isInvalid(input) {
+			const illegalCharacters = input.value.match(/[^a-zA-Z0-9]/g);
 			return illegalCharacters ? true : false;
 		},
 		invalidityMessage: 'Only letters and numbers are allowed',
@@ -106,37 +99,37 @@ var usernameValidityChecks = [
 	}
 ];
 
-var passwordValidityChecks = [
+const passwordValidityChecks = [
 	{
-		isInvalid: function(input) {
+		isInvalid(input) {
 			return input.value.length < 8 | input.value.length > 100;
 		},
 		invalidityMessage: 'This input needs to be between 8 and 100 characters',
 		element: document.querySelector('label[for="password"] .input-requirements li:nth-child(1)')
 	},
 	{
-		isInvalid: function(input) {
+		isInvalid(input) {
 			return !input.value.match(/[0-9]/g);
 		},
 		invalidityMessage: 'At least 1 number is required',
 		element: document.querySelector('label[for="password"] .input-requirements li:nth-child(2)')
 	},
 	{
-		isInvalid: function(input) {
+		isInvalid(input) {
 			return !input.value.match(/[a-z]/g);
 		},
 		invalidityMessage: 'At least 1 lowercase letter is required',
 		element: document.querySelector('label[for="password"] .input-requirements li:nth-child(3)')
 	},
 	{
-		isInvalid: function(input) {
+		isInvalid(input) {
 			return !input.value.match(/[A-Z]/g);
 		},
 		invalidityMessage: 'At least 1 uppercase letter is required',
 		element: document.querySelector('label[for="password"] .input-requirements li:nth-child(4)')
 	},
 	{
-		isInvalid: function(input) {
+		isInvalid(input) {
 			return !input.value.match(/[\!\@\#\$\%\^\&\*]/g);
 		},
 		invalidityMessage: 'You need one of the required special characters',
@@ -144,9 +137,9 @@ var passwordValidityChecks = [
 	}
 ];
 
-var passwordRepeatValidityChecks = [
+const passwordRepeatValidityChecks = [
 	{
-		isInvalid: function() {
+		isInvalid() {
 			return passwordRepeatInput.value != passwordInput.value;
 		},
 		invalidityMessage: 'This password needs to match the first one'
@@ -163,7 +156,7 @@ var passwordRepeatValidityChecks = [
 
 ---------------------------- */
 
-var usernameInput = document.getElementById('username');
+const usernameInput = document.getElementById('username');
 var passwordInput = document.getElementById('password');
 var passwordRepeatInput = document.getElementById('password_repeat');
 
@@ -185,14 +178,14 @@ passwordRepeatInput.CustomValidation.validityChecks = passwordRepeatValidityChec
 
 ---------------------------- */
 
-var inputs = document.querySelectorAll('input:not([type="submit"])');
+const inputs = document.querySelectorAll('input:not([type="submit"])');
 
 
-var submit = document.querySelector('input[type="submit"');
-var form = document.getElementById('registration');
+const submit = document.querySelector('input[type="submit"');
+const form = document.getElementById('registration');
 
 function validate() {
-	for (var i = 0; i < inputs.length; i++) {
+	for (let i = 0; i < inputs.length; i++) {
 		inputs[i].CustomValidation.checkInput();
 	}
 }
