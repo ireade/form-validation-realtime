@@ -35,15 +35,14 @@ CustomValidation.prototype = {
 			}
 
 			var requirementElement = this.validityChecks[i].element;
+
 			if (requirementElement) {
 				if (isInvalid) {
-					requirementElement.classList
-					.add('invalid')
-					.remove('valid');
+					requirementElement.classList.add('invalid');
+					requirementElement.classList.remove('valid');
 				} else {
-					requirementElement.classList
-					.remove('invalid')
-					.add('valid');
+					requirementElement.classList.remove('invalid');
+					requirementElement.classList.add('valid');
 				}
 
 			} // end if requirementElement
