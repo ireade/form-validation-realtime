@@ -1,32 +1,40 @@
-class CustomValidation {
-    constructor(input) {
-        this.invalidities = [];
-        this.validityChecks = [];
+/* ----------------------------
 
-        //add reference to the input node
-        this.inputNode = input;
+	CustomValidation prototype
 
-        //trigger method to attach the listener
-        this.registerListener();
-    }
+	- Keeps track of the list of invalidity messages for this input
+	- Keeps track of what validity checks need to be performed for this input
+	- Performs the validity checks and sends feedback to the front end
 
-    addInvalidity(message) {
+---------------------------- */
+
+function CustomValidation(input) {
+	this.invalidities = [];
+	this.validityChecks = [];
+
+	//add reference to the input node
+	this.inputNode = input;
+
+	//trigger method to attach the listener
+	this.registerListener();
+}
+
+CustomValidation.prototype = {
+	addInvalidity: function(message) {
 		this.invalidities.push(message);
-	}
-
-    getInvalidities() {
+	},
+	getInvalidities: function() {
 		return this.invalidities.join('. \n');
-	}
+	},
+	checkValidity: function(input) {
+		for ( var i = 0; i < this.validityChecks.length; i++ ) {
 
-    checkValidity(input) {
-		for ( let i = 0; i < this.validityChecks.length; i++ ) {
-
-			const isInvalid = this.validityChecks[i].isInvalid(input);
+			var isInvalid = this.validityChecks[i].isInvalid(input);
 			if (isInvalid) {
 				this.addInvalidity(this.validityChecks[i].invalidityMessage);
 			}
 
-			const requirementElement = this.validityChecks[i].element;
+			var requirementElement = this.validityChecks[i].element;
 			if (requirementElement) {
 				if (isInvalid) {
 					requirementElement.classList
@@ -40,9 +48,8 @@ class CustomValidation {
 
 			} // end if requirementElement
 		} // end for
-	}
-
-    checkInput() { // checkInput now encapsulated
+	},
+	checkInput: function() { // checkInput now encapsulated
 
 		this.inputNode.CustomValidation.invalidities = [];
 		this.checkValidity(this.inputNode);
@@ -50,22 +57,22 @@ class CustomValidation {
 		if ( this.inputNode.CustomValidation.invalidities.length === 0 && this.inputNode.value !== '' ) {
 			this.inputNode.setCustomValidity('');
 		} else {
-			const message = this.inputNode.CustomValidation.getInvalidities();
+			var message = this.inputNode.CustomValidation.getInvalidities();
 			this.inputNode.setCustomValidity(message);
 		}
-	}
+	},
+	registerListener: function() { //register the listener here
 
-    registerListener() { //register the listener here
+		var CustomValidation = this;
 
-		const CustomValidation = this;
-
-		this.inputNode.addEventListener('keyup', () => {
+		this.inputNode.addEventListener('keyup', function() {
 			CustomValidation.checkInput();
 		});
 
 
 	}
-}
+
+};
 
 
 
@@ -81,17 +88,17 @@ class CustomValidation {
 
 ---------------------------- */
 
-const usernameValidityChecks = [
+var usernameValidityChecks = [
 	{
-		isInvalid(input) {
+		isInvalid: function(input) {
 			return input.value.length < 3;
 		},
 		invalidityMessage: 'This input needs to be at least 3 characters',
 		element: document.querySelector('label[for="username"] .input-requirements li:nth-child(1)')
 	},
 	{
-		isInvalid(input) {
-			const illegalCharacters = input.value.match(/[^a-zA-Z0-9]/g);
+		isInvalid: function(input) {
+			var illegalCharacters = input.value.match(/[^a-zA-Z0-9]/g);
 			return illegalCharacters ? true : false;
 		},
 		invalidityMessage: 'Only letters and numbers are allowed',
@@ -99,37 +106,37 @@ const usernameValidityChecks = [
 	}
 ];
 
-const passwordValidityChecks = [
+var passwordValidityChecks = [
 	{
-		isInvalid(input) {
+		isInvalid: function(input) {
 			return input.value.length < 8 | input.value.length > 100;
 		},
 		invalidityMessage: 'This input needs to be between 8 and 100 characters',
 		element: document.querySelector('label[for="password"] .input-requirements li:nth-child(1)')
 	},
 	{
-		isInvalid(input) {
+		isInvalid: function(input) {
 			return !input.value.match(/[0-9]/g);
 		},
 		invalidityMessage: 'At least 1 number is required',
 		element: document.querySelector('label[for="password"] .input-requirements li:nth-child(2)')
 	},
 	{
-		isInvalid(input) {
+		isInvalid: function(input) {
 			return !input.value.match(/[a-z]/g);
 		},
 		invalidityMessage: 'At least 1 lowercase letter is required',
 		element: document.querySelector('label[for="password"] .input-requirements li:nth-child(3)')
 	},
 	{
-		isInvalid(input) {
+		isInvalid: function(input) {
 			return !input.value.match(/[A-Z]/g);
 		},
 		invalidityMessage: 'At least 1 uppercase letter is required',
 		element: document.querySelector('label[for="password"] .input-requirements li:nth-child(4)')
 	},
 	{
-		isInvalid(input) {
+		isInvalid: function(input) {
 			return !input.value.match(/[\!\@\#\$\%\^\&\*]/g);
 		},
 		invalidityMessage: 'You need one of the required special characters',
@@ -137,9 +144,9 @@ const passwordValidityChecks = [
 	}
 ];
 
-const passwordRepeatValidityChecks = [
+var passwordRepeatValidityChecks = [
 	{
-		isInvalid() {
+		isInvalid: function() {
 			return passwordRepeatInput.value != passwordInput.value;
 		},
 		invalidityMessage: 'This password needs to match the first one'
@@ -156,7 +163,7 @@ const passwordRepeatValidityChecks = [
 
 ---------------------------- */
 
-const usernameInput = document.getElementById('username');
+var usernameInput = document.getElementById('username');
 var passwordInput = document.getElementById('password');
 var passwordRepeatInput = document.getElementById('password_repeat');
 
@@ -178,14 +185,14 @@ passwordRepeatInput.CustomValidation.validityChecks = passwordRepeatValidityChec
 
 ---------------------------- */
 
-const inputs = document.querySelectorAll('input:not([type="submit"])');
+var inputs = document.querySelectorAll('input:not([type="submit"])');
 
 
-const submit = document.querySelector('input[type="submit"');
-const form = document.getElementById('registration');
+var submit = document.querySelector('input[type="submit"');
+var form = document.getElementById('registration');
 
 function validate() {
-	for (let i = 0; i < inputs.length; i++) {
+	for (var i = 0; i < inputs.length; i++) {
 		inputs[i].CustomValidation.checkInput();
 	}
 }
