@@ -4,7 +4,7 @@
 
 ## [Read the Blog Post](https://bitsofco.de/realtime-form-validation/#comment-2754183495)
 
-This branch hold an updates version of the original. If you're coming from the [video tutorial](https://youtu.be/m4Fru330HqQ), you should checkout out the [the original repository](https://github.com/ireade/form-validation-realtime/tree/original) for the version from that video. 
+This branch holds an updated version of the original. If you're coming from the [video tutorial](https://youtu.be/m4Fru330HqQ), you should checkout out the [the original repository](https://github.com/ireade/form-validation-realtime/tree/original) for the version from that video. 
 
 ## Changes + Contributors
 
