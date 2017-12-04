@@ -26,39 +26,34 @@ CustomValidation.prototype = {
 	getInvalidities: function() {
 		return this.invalidities.join('. \n');
 	},
+	setElementValidityClasses(element, isInvalid) {
+		isInvalid
+		  ? element.classList.add("invalid")
+		  : element.classList.remove("invalid");
+		isInvalid
+		  ? element.classList.remove("valid")
+		  : element.classList.add("valid");
+	  },
 	checkValidity: function(input) {
-		for ( var i = 0; i < this.validityChecks.length; i++ ) {
-
-			var isInvalid = this.validityChecks[i].isInvalid(input);
-			if (isInvalid) {
-				this.addInvalidity(this.validityChecks[i].invalidityMessage);
-			}
-
-			var requirementElement = this.validityChecks[i].element;
-
-			if (requirementElement) {
-				if (isInvalid) {
-					requirementElement.classList.add('invalid');
-					requirementElement.classList.remove('valid');
-				} else {
-					requirementElement.classList.remove('invalid');
-					requirementElement.classList.add('valid');
-				}
-
-			} // end if requirementElement
-		} // end for
+		this.validityChecks.map(function(validityCheck) {
+			var isInvalid = validityCheck.isInvalid(input);
+			var requirementElement = validityCheck.element;
+	  
+			isInvalid ? this.addInvalidity(validityCheck.invalidityMessage) : {};
+	  
+			requirementElement
+			  ? this.setElementValidityClasses(requirementElement, isInvalid)
+			  : {};
+		  }, this);
 	},
 	checkInput: function() { // checkInput now encapsulated
 
 		this.inputNode.CustomValidation.invalidities = [];
 		this.checkValidity(this.inputNode);
 
-		if ( this.inputNode.CustomValidation.invalidities.length === 0 && this.inputNode.value !== '' ) {
-			this.inputNode.setCustomValidity('');
-		} else {
-			var message = this.inputNode.CustomValidation.getInvalidities();
-			this.inputNode.setCustomValidity(message);
-		}
+		this.inputNode.CustomValidation.invalidities.length === 0 && this.inputNode.value !== ""
+		  ? this.inputNode.setCustomValidity("")
+		  : this.inputNode.setCustomValidity(this.inputNode.CustomValidation.getInvalidities());
 	},
 	registerListener: function() { //register the listener here
 
@@ -191,9 +186,9 @@ var submit = document.querySelector('input[type="submit"');
 var form = document.getElementById('registration');
 
 function validate() {
-	for (var i = 0; i < inputs.length; i++) {
-		inputs[i].CustomValidation.checkInput();
-	}
+	Array.from(inputs).map(function(input) {
+		input.CustomValidation.checkInput();
+	  });
 }
 
 submit.addEventListener('click', validate);
